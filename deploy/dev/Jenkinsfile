@@ -10,8 +10,7 @@ pipeline {
   stages {
     stage('Login to Repo & Cleaning Up') {
         steps {
-            withCredentials([usernamePassword(credentialsId: '
-            ', passwordVariable: 'pass', usernameVariable: 'user')]) {
+            withCredentials([usernamePassword(credentialsId: 'CursoCICD_Registry_Repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
                 sh "docker login -u \"$user\" -p \"$pass\""
             }
             sh "docker image prune -f"
