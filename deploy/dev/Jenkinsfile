@@ -4,7 +4,7 @@ pipeline {
     nodejs 'NodeJS12LTS'
   }
   environment {
-    ENV=dev
+    ENV="dev"
   }
 
   stages {
