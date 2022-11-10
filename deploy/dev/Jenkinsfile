@@ -1,0 +1,30 @@
+pipeline {
+  agent any
+  tools {
+    nodejs 'NodeJS12LTS'
+  }
+  environment {
+    ENV=dev
+  }
+
+  stages {
+    stage('Login to Repo & Cleaning Up') {
+        steps {
+            withCredentials([usernamePassword(credentialsId: 'CursoCICD_Registry_Repo', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                sh "docker login -u \"$user\" -p \"$pass\""
+            }
+            sh "docker image prune -f"
+        }
+    }
+
+    stage('Build catalogos service'){
+        steps{
+            dir("catalog-service/"){
+                echo 'Construccion de microservicio de catalogos'
+                sh "docker build -f 'DockerFile' -t lgracia/cursocicd:mscatalogos . --no-cache"
+                sh "docker push lgracia/cursocicd:mscatalogos"
+            }
+        }
+
+    }
+}
